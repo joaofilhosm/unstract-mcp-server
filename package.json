@@ -1,0 +1,40 @@
+{
+  "name": "unstract-mcp-server",
+  "version": "1.0.0",
+  "description": "Public remote MCP server (Streamable HTTP) that proxies the Unstract API Deployment MCP endpoint. Compatible with OpenAI and Claude.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test --import tsx tests/*.test.ts",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "express": "^5.1.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "unstract",
+    "document-extraction",
+    "llm",
+    "vercel",
+    "openai",
+    "claude"
+  ]
+}
