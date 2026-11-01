@@ -149,6 +149,39 @@ OpenAI's MCP connector expects an HTTP endpoint with bearer auth:
 
 ---
 
+## Development with a local mock
+
+A mock of the Unstract MCP endpoint ships with this repo. It reproduces the real
+backend's contract (validation rules, the `execution_id` contract, the one-shot
+completed-result behaviour) so you can exercise the whole path without credentials.
+
+```bash
+npm install
+npm run build
+npm run dev:mock
+```
+
+It prints the MCP endpoint and a ready-to-use bearer token:
+
+```
+MCP endpoint : http://localhost:3000/mcp
+Bearer token : mock-client-key
+```
+
+Then:
+
+```bash
+curl -s http://localhost:3000/mcp \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer mock-client-key' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+> The mock returns synthetic extraction results. It exists to validate the proxy,
+> not to replace the real platform.
+
+---
+
 ## Local development
 
 ```bash

@@ -11,15 +11,15 @@
     "dev": "tsx watch src/index.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "node --test --import tsx tests/*.test.ts",
-    "lint": "tsc -p tsconfig.json --noEmit"
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "mock:unstract": "node scripts/mock-unstract.mjs",
+    "dev:mock": "node scripts/dev-with-mock.mjs"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.0",
-    "express": "^5.1.0",
-    "zod": "^3.24.1"
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
