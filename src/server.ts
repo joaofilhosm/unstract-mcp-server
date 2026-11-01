@@ -1,3 +1,4 @@
+import type { IncomingMessage, ServerResponse } from 'node:http';
 /**
  * HTTP server exposing the MCP endpoint.
  */
@@ -81,7 +82,7 @@ export function createApp(config: Config): Express {
 }
 
 /**
- * Starts the HTTP server. Used by the Vercel Node runtime and by local runs.
+ * Starts the HTTP server. Used for local runs and `npm start`.
  */
 export async function start(): Promise<void> {
   const config = loadConfig();
@@ -92,5 +93,38 @@ export async function start(): Promise<void> {
     console.log(
       `[unstract-mcp] listening on :${port} — upstream ${upstreamMcpUrl(config)}`,
     );
+  });
+}
+
+/**
+ * Serverless handler. The Vercel Node runtime treats this module's default
+ * export as the request handler when the project uses the `node` framework.
+ */
+export default async function handler(
+  req: IncomingMessage,
+  res: ServerResponse,
+): Promise<void> {
+  const app = createApp(loadConfig());
+
+  return new Promise<void>((resolve) => {
+    let settled = false;
+    const done = () => {
+      if (!settled) {
+        settled = true;
+        resolve();
+      }
+    };
+
+    app(req as never, res as never, () => {
+      if (!res.headersSent) {
+        res.statusCode = 404;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ error: 'Not Found' }));
+      }
+      done();
+    });
+
+    res.on('finish', done);
+    res.on('close', done);
   });
 }
